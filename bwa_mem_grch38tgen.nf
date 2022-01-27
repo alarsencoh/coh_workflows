@@ -10,12 +10,12 @@ process bwa_mem {
         file "${sample}.bam"
 
     container "ghcr.io/coh-apps/coh_app_bwa-0.7.17.grch38tgen:skylake"
-    cpus 8
-    memory '32 GB'
+    cpus 4
+    memory '15 GB'
 
     script:
         """
-            bwa mem -v 3 -Y -K 10000000 -t 8 -R "${rg}" \
+            bwa mem -v 3 -Y -K 10000000 -t 4 -R "${rg}" \
             /database/GRCh38tgen_decoy_alts_hla.fa \
             "${fastq1}" "${fastq2}" \
             > "${sample}.bam"
