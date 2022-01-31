@@ -9,7 +9,7 @@ process map_fastq {
     output:
         file "${sample}.bam"
 
-    container "ghcr.io/coh-apps/coh_app_bwa-0.7.17.grch38tgen:skylake"
+    container "ghcr.io/coh-apps/coh_app_bwa-0.7.17.grch38tgen:skylake.docker"
     cpus 4
     memory '15 GB'
 

@@ -8,7 +8,7 @@ process merge_bams {
         file "${sample}.bam"
         file "${sample}.bam.bai"
 
-    container "ghcr.io/coh-apps/coh_app_samtools-1.13:skylake"
+    container "ghcr.io/coh-apps/coh_app_samtools-1.13:skylake.docker"
     cpus 4
     memory '15 GB'
 
