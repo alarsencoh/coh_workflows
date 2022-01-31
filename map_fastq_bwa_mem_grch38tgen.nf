@@ -9,7 +9,7 @@ process map_fastq {
     output:
         file "${sample}.bam"
 
-    container "ghcr.io/coh-apps/coh_app_bwa-0.7.17.grch38tgen:skylake.docker"
+    container "ghcr.io/coh-apps/coh_app_bwa-0.7.17.grch38tgen:skylake"
     cpus 4
     memory '15 GB'
 
@@ -18,7 +18,7 @@ process map_fastq {
             set -Eeuxo pipefail
             bwa mem -v 3 -Y -K 10000000 -t 4 -R "${rg}" \
             /database/GRCh38tgen_decoy_alts_hla.fa \
-            fastq1_??.fq fastq1_??.fq | \
+            fastq1_??.fq fastq2_??.fq | \
             samtools view -bS - | \
             samtools fixmate --threads 4 -m - - | \
             samtools sort -l 2 -m 2G --threads 4 --output-fmt BAM -o "${sample}.bam"
