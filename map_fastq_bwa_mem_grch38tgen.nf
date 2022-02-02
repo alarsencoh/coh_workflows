@@ -2,8 +2,7 @@ nextflow.enable.dsl=2
 
 process map_fastq {
     input:
-        file "fastq1_??.fq"
-        file "fastq2_??.fq"
+        tuple val(reads_name), path(reads)
         val rg
         val sample
     output:
@@ -18,7 +17,7 @@ process map_fastq {
             set -Eeuxo pipefail
             bwa mem -v 3 -Y -K 10000000 -t 4 -R "${rg}" \
             /database/GRCh38tgen_decoy_alts_hla.fa \
-            fastq1_??.fq fastq2_??.fq | \
+            ${reads} | \
             samtools view -bS - | \
             samtools fixmate --threads 4 -m - - | \
             samtools sort -l 2 -m 2G --threads 4 --output-fmt BAM -o "${sample}.bam"
