@@ -1,12 +1,15 @@
 nextflow.enable.dsl=2
 
+params.publish_dir = ""
+
 process merge_bams {
     input:
-        file "input_??.bam"
+        path "input_??.bam"
         val sample
     output:
-        file "${sample}.bam"
-        file "${sample}.bam.bai"
+        publishDir "${params.publish_dir}/${task.process.replaceAll(':', '_')}", enabled: params.publish_dir as boolean
+        path "output/out.bam", emit: bam
+        path "output/out.bam.bai", emit: bam_bai
 
     container "ghcr.io/coh-apps/coh_app_samtools-1.13:skylake"
     cpus 4
@@ -14,8 +17,11 @@ process merge_bams {
 
     """
         set -Eeuxo pipefail
-        samtools merge --threads 4 -c -f -l 6 '${sample}.bam' input_??.bam
-        samtools index '${sample}.bam'
+
+        mkdir -p output
+
+        samtools merge --threads 4 -c -f -l 6 output/out.bam input_??.bam
+        samtools index output/out.bam
     """
 }
 
