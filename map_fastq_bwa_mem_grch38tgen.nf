@@ -11,7 +11,7 @@ process map_fastq {
         publishDir "${params.publish_dir}/${task.process.replaceAll(':', '_')}", enabled: params.publish_dir as boolean
         path "output/out.bam", emit: bam
 
-    container "ghcr.io/coh-apps/coh_app_bwa-0.7.17.grch38tgen:skylake"
+    container "ghcr.io/coh-apps/coh_app_bwa-0.7.17.grch38tgen:skylake.docker"
     cpus 4
     memory "15 GB"
 
