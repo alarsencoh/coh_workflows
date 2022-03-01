@@ -45,9 +45,12 @@ workflow {
         intervals = interval.collect { ' -L "' + it.contig + ':' + it.start + '-' + it.stop + '" ' }
     }
     
-    call_variants_gatk_haplotypecaller( merge_bams.out.bam,
+    output = call_variants_gatk_haplotypecaller( merge_bams.out.bam,
                                         params.reference,
                                         params.reference_fai,
                                         params.reference_dict,
                                         intervals )
+
+    emit:
+        output
 }
