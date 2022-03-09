@@ -7,12 +7,12 @@ process map_fastq {
         tuple val(reads_name), path(reads)
         val rg
         val sample
-        path reference
-        path reference_ann
-        path reference_amb
-        path reference_bwt
-        path reference_pac
-        path reference_sa
+        path reference_fa
+        path reference_fa_ann
+        path reference_fa_amb
+        path reference_fa_bwt
+        path reference_fa_pac
+        path reference_fa_sa
     output:
         publishDir "${params.publish_dir}/${task.process.replaceAll(':', '_')}", enabled: params.publish_dir as boolean
         path "output/out.bam", emit: bam
@@ -27,7 +27,7 @@ process map_fastq {
             
             mkdir -p output
 
-            bwa mem -v 3 -Y -K 10000000 -t 4 -R "${rg}" ${reference} ${reads} | \
+            bwa mem -v 3 -Y -K 10000000 -t 4 -R "${rg}" ${reference_fa} ${reads} | \
             samtools view -bS - | \
             samtools fixmate --threads 4 -m - - | \
             samtools sort -l 2 -m 2G --threads 4 --output-fmt BAM -o "output/out.bam"

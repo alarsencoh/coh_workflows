@@ -5,13 +5,13 @@ import org.yaml.snakeyaml.Yaml
 params.fastq_pairs = null
 params.rg = null
 params.sample = null
-params.reference = null
-params.reference_ann = null
-params.reference_amb = null
-params.reference_bwt = null
-params.reference_pac = null
-params.reference_sa = null
-params.reference_fai = null
+params.reference_fa = null
+params.reference_fa_ann = null
+params.reference_fa_amb = null
+params.reference_fa_bwt = null
+params.reference_fa_pac = null
+params.reference_fa_sa = null
+params.reference_fa_fai = null
 params.reference_dict = null
 params.gatk_haplotypecaller_intervals = null
 params.workflow_publish_dir = ""
@@ -28,12 +28,12 @@ workflow {
     map_fastq( fastq_pairs,
                params.rg,
                params.sample,
-               params.reference,
-               params.reference_ann,
-               params.reference_amb,
-               params.reference_bwt,
-               params.reference_pac,
-               params.reference_sa )
+               params.reference_fa,
+               params.reference_fa_ann,
+               params.reference_fa_amb,
+               params.reference_fa_bwt,
+               params.reference_fa_pac,
+               params.reference_fa_sa )
 
     merge_bams( map_fastq.out.bam.collect(),
                 params.sample )
@@ -46,8 +46,8 @@ workflow {
     }
     
     output = call_variants_gatk_haplotypecaller( merge_bams.out.bam,
-                                        params.reference,
-                                        params.reference_fai,
+                                        params.reference_fa,
+                                        params.reference_fa_fai,
                                         params.reference_dict,
                                         intervals )
 
